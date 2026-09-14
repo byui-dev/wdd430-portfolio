@@ -1,7 +1,7 @@
-export default function ProjectsPage() {
+export default function SchoolProjectsPage() {
   return (
     <main>
-       <h2>Projects Overview</h2>      
+       <h2>School Projects</h2>      
     </main>
   )   
 }
