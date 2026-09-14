@@ -1,0 +1,4 @@
+{
+  "standard.enable": false,
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib"
+}
