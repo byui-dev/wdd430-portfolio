@@ -10,15 +10,26 @@ const links = [
   { href: "/projects", label: "Projects" },
 ];
 
+function normalizePath(p: string | null | undefined) {
+  if (!p) return "/";
+  if (p === "/") return "/";
+  return p.replace(/\+$/, "");
+}
+
 export default function NavLinks() {
     const pathname = usePathname();
+    const current = normalizePath(pathname);
     
     return (
         <nav>
             <ul className="flex gap-6">
-              {links.map(({ href, label }) => {
-                const isActive = pathname === href;
-                  
+          {links.map(({ href, label }) => {
+            const normalizedHref = normalizePath(href);    
+            const isActive = 
+              normalizedHref === "/"
+                ? current === "/"
+                : current === normalizedHref || current.startsWith(normalizedHref + "/");
+            
               return (
                 <li key={href}>
                   <Link
