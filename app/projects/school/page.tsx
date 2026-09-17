@@ -6,13 +6,14 @@ interface Project {
 }
 
 export default async function SchoolProjectsPage() {
-  // fetch data on the server with the school type query parameter
-  const res = await fetch(
-    "http://localhost:3000/api/projects?type=school",
-    {
-      cache: "no-store", // Disable caching to always get fresh data
-    },
-  );
+  // Automatically switch between Vercel URL environments and Localhost
+  const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : 'http://localhost:3000';
+  
+  const res = await fetch(`${baseURL}/api/projects?type=school`, {
+    cache: "no-store", // Disable caching to always get fresh data
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch school projects");
