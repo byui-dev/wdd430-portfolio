@@ -27,7 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        {children}
+        {/* Page components wrapped here so they abosrb empty space */}
+        <main className="flex-grow"></main>
+        {children} 
         <Footer />
       </body>
     </html>
