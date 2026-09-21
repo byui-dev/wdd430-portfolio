@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import { getProjectById } from "@/lib/projects-db";
 
 export async function GET(
-    _request: Request,
-    { params }: { params: { id: string } }
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
 ) {
-   const id  = Number(params.id); // Validate id is a number
+  const { id: rawId } = await params; // Validate id is a number
+  const id = Number(rawId);
+  
  if (Number.isNaN(id)) {
    return NextResponse.json({ error: "Invalid project ID format" }, { status: 400 });
  }
