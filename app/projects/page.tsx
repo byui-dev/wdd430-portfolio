@@ -1,30 +1,38 @@
-// Define a TypeScript interface for the props of the ProjectsPage component
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-}
+import { getProjects, type Project } from "@/lib/projects-db";
+
+export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
-  // 1. Fetch data directly on the server
-  const res = await fetch("http://localhost:3000/api/projects", {
-    cache: "no-store", // Disable caching to always get fresh data
-  });
+  // 1. Initialize an empty variable to hold your data safely outside the block
+  let projects: Project[] = [];
+  let hasError = false;
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch projects");
+  try {
+    // 2. Keep ONLY the dangerous database query operation inside the try/catch
+    projects = await getProjects();
+  } catch {
+    // Flag that a database failure occurred
+    hasError = true;
   }
 
-  const projects: Project[] = await res.json();
+  // 3. Handle your fallback error view cleanly out in the open
+  if (hasError) {
+    return (
+      <main style={{ padding: "2rem" }}>
+        <h1>Projects</h1>
+        <p>Error loading projects. Please try again later.</p>
+      </main>
+    );
+  }
 
-  // Render the data
+  // 4. Return your normal successful JSX safely away from any try/catch gates
   return (
     <main style={{ padding: "2rem" }}>
       <h1>Projects</h1>
       <ul>
         {projects.map((project) => (
           <li key={project.id}>
-            <h2>{project.name}</h2>
+            <h2>{project.title}</h2>
             <p>{project.description}</p>
           </li>
         ))}
